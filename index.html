@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learnify | Learning Platform</title>
+<style>
+:root{
+  --primary-bg: #f5f7fa;
+  --navbar-footer: #1b3b5f;
+  --accent: #ff6b6b;
+  --card-bg: #ffffff;
+  --hero-gradient-start: #4b6cb7;
+  --hero-gradient-end: #182848;
+  --text-color: #333333;
+  --dashboard-card: #4b6cb7;
+  --dashboard-progress: #ff6b6b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',Arial; background: var(--primary-bg); color: var(--text-color);}
+nav{display:flex; justify-content:space-between; align-items:center; padding:15px 40px; background:var(--navbar-footer); color:white; position:sticky; top:0; z-index:100;}
+nav h2{color:var(--accent);}
+nav a{margin-left:20px; text-decoration:none; color:white; font-weight:600; cursor:pointer;}
+nav button{background:var(--accent); color:white; border:none; padding:10px 18px; border-radius:25px; cursor:pointer;}
+header{min-height:70vh; background:linear-gradient(120deg,var(--hero-gradient-start),var(--hero-gradient-end)); color:white; display:flex; align-items:center; justify-content:center; text-align:center; padding:60px;}
+.hero{max-width:600px; animation:slideIn 1s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateX(-60px);} to{opacity:1;transform:translateX(0);}}
+.hero h1{font-size:3rem;margin-bottom:20px;}
+.hero p{font-size:1.2rem;margin-bottom:25px;}
+.hero .btn-group{display:flex; justify-content:center; gap:20px;}
+.hero button{background:var(--accent); border:none; padding:15px 25px; font-size:1rem; border-radius:30px; cursor:pointer; transition:0.3s;}
+.hero button:hover{transform:scale(1.05);}
+
+.course {
+  background: linear-gradient(145deg, #ffffff, #f0f4ff);
+  width: 270px;
+  padding: 22px;
+  border-radius: 22px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.enroll-btn {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  margin: 14px;
+}
+.course::before {
+  pointer-events: none;
+}
+.speaker-hero {
+  margin-top: 12px;
+  animation: speakerSlide 1s ease forwards;
+}
+
+.teacher-line, .designation-line {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #4b6cb7;
+  margin-bottom: 6px;
+  animation: fadeUp 0.9s ease forwards;
+}
+
+.teacher-name, .designation-name {
+  font-weight: 800;
+  color: #182848;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes speakerSlide {
+  from { opacity:0; transform: translateX(-20px); }
+  to { opacity:1; transform: translateX(0); }
+}
+
+
+.course-title {
+  font-size: 1.15rem;
+  margin-top: 14px;
+  color: #1b3b5f;
+  animation: fadeUp 0.7s ease;
+}
+
+@keyframes textPop {
+  from { opacity:0; transform: translateY(10px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+
+
+.course h3 {
+  font-size: 1.3rem;
+  margin-top: 12px;
+  color: #1b3b5f;
+  position: relative;
+  animation: textReveal 0.8s ease forwards;
+}
+
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+    letter-spacing: 4px;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 1px;
+  }
+}
+
+.course p {
+  margin-top: 8px;
+  animation: fadeUp 0.9s ease forwards;
+}
+
+.speaker-box {
+  margin-top: 8px;
+  padding: 10px;
+  background: rgba(75,108,183,0.08);
+  border-radius: 12px;
+  animation: glowIn 0.8s ease;
+}
+
+.speaker-name {
+  font-weight: 700;
+  color: #4b6cb7;
+}
+
+.speaker-designation {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.course {
+  opacity: 0;
+  animation: cardIn 0.9s ease forwards;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+.speaker-name-big {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #4b6cb7;
+  margin-top: 10px;
+  animation: speakerPop 0.9s cubic-bezier(.25,.8,.25,1);
+}
+
+@keyframes speakerPop {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.85);
+    letter-spacing: 6px;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    letter-spacing: 1px;
+  }
+}
+
+
+.speaker-designation-big {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #182848;
+  margin-top: 4px;
+  animation: designationSlide 1s ease;
+}
+
+@keyframes designationSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes glowIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Horizontal scroll like Chitti */
+.course-scroll {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  scroll-snap-type: x mandatory;
+}
+
+.course-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.course-scroll::-webkit-scrollbar-thumb {
+  background: #c1c7ff;
+  border-radius: 10px;
+}
+
+/* Chitti-style course card */
+.course {
+  min-width: 320px;
+  background: white;
+  border-radius: 22px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.12);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.course-body {
+  padding: 18px;
+  animation: fadeSlideUp 0.8s ease forwards;
+}
+
+.time-pill {
+  margin-top: 10px;
+  display: inline-block;
+  background: linear-gradient(135deg,#ff6b6b,#ff4757);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  animation: timePulse 1.8s infinite;
+}
+
+
+
+@keyframes timePulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,107,107,.6); }
+  70% { box-shadow: 0 0 0 16px rgba(255,107,107,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,107,107,0); }
+}
+
+
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg,#ff6b6b,#ff4757);
+  color: white;
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  animation: pulseBadge 1.8s infinite;
+}
+
+@keyframes pulseBadge {
+  0% { box-shadow: 0 0 0 0 rgba(255,107,107,.6); }
+  70% { box-shadow: 0 0 0 12px rgba(255,107,107,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,107,107,0); }
+}
+
+
+.course h3 {
+  font-size: 1.3rem;
+  color: #1b3b5f;
+  margin: 6px 0;
+}
+.enroll-btn {
+  width: 100%;
+  margin-top: 12px;
+  background: linear-gradient(135deg,#4b6cb7,#182848);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+}
+
+.enroll-btn:hover {
+  transform: scale(1.08);
+}
+
+
+.speaker-name {
+  font-weight: 600;
+  color: #4b6cb7;
+}
+
+.speaker-designation {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.course-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+
+.course:hover {
+  transform: translateY(-15px) scale(1.05);
+  box-shadow: 0 35px 70px rgba(0,0,0,0.2);
+}
+.course img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.course:hover img {
+  transform: scale(1.12);
+}
+
+
+.course::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(75,108,183,0.18), transparent 60%);
+  opacity: 0;
+  transition: 0.5s;
+  pointer-events: none; /* 🔥 THIS FIXES THE CLICK ISSUE */
+}
+
+
+.course:hover::before {
+  opacity: 1;
+}
+
+.course:hover {
+  transform: translateY(-18px) scale(1.07);
+  box-shadow: 0 35px 70px rgba(0,0,0,0.2);
+}
+
+
+
+.enroll-form input,
+.enroll-form button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: transform 0.5s, opacity 0.5s;
+}
+
+.enroll-form.show input,
+.enroll-form.show button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.animated-course {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 16px;
+  transition: transform 0.7s ease, box-shadow 0.7s ease;
+}
+
+.course:hover .animated-course {
+  transform: scale(1.15) rotate(-1deg);
+  box-shadow: 0 15px 40px rgba(75,108,183,0.4);
+}
+
+
+.course.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+
+.course:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+
+img.animated-course {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.enroll-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+.enroll-btn:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  background: #d13956;
+}
+
+
+.course-time {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: slideLeft 0.9s ease;
+}
+
+@keyframes slideLeft {
+  from { opacity:0; transform: translateX(20px); }
+  to { opacity:1; transform: translateX(0); }
+}
+
+
+
+.hero button.explore{background:white; color:var(--hero-gradient-start);}
+#floatingBtn{position:fixed; bottom:20px; right:20px; background:var(--accent); color:white; border:none; padding:15px 20px; border-radius:50px; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.3); z-index:1000; transition:transform .3s;}
+#floatingBtn:hover{transform:scale(1.1);}
+section{padding:80px 40px; text-align:center; opacity:0; transform:translateY(50px); transition:1s;}
+section.show{opacity:1; transform:translateY(0);}
+section h2{font-size:2.5rem; margin-bottom:40px; color:var(--hero-gradient-start);}
+.course-container{display:flex; justify-content:center; gap:30px; flex-wrap:wrap;}
+.course{background:var(--card-bg); width:260px; padding:30px; border-radius:20px; transition:.4s; box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+.course:hover{transform:translateY(-12px) scale(1.05); box-shadow:0 20px 40px rgba(0,0,0,0.15);}
+.course h3{color:var(--accent);}
+.dashboard{background:#e0e0e0;}
+.dashboard-cards{display:flex; justify-content:center; gap:30px; flex-wrap:wrap;}
+.d-card{background:var(--dashboard-card); width:230px; padding:30px; border-radius:20px; box-shadow:0 15px 30px rgba(0,0,0,0.1); transition:.4s; position:relative; color:white;}
+.d-card:hover{transform:translateY(-10px);}
+.d-card h1{font-size:3rem; color:var(--accent);}
+.progress-bar{width:100%; height:12px; background:#ccc; border-radius:8px; margin-top:10px; overflow:hidden;}
+.progress-fill{height:100%; background:var(--dashboard-progress); width:0; transition:1s;}
+.about{background:#d9f0ff; padding:80px 40px;}
+.about p{max-width:700px; margin:auto; font-size:1.1rem; line-height:1.8;}
+.contact-box{max-width:500px; margin:auto; background:white; padding:35px; border-radius:20px; color:#333; box-shadow:0 8px 20px rgba(0,0,0,0.2);}
+.contact-box input, .contact-box textarea, .contact-box select{width:100%; padding:12px; margin:10px 0; border:1px solid #ccc; border-radius:10px;}
+.contact-box button{width:100%; padding:12px; background:var(--accent); border:none; border-radius:12px; font-weight:bold; cursor:pointer; color:white; transition:.3s;}
+.contact-box button:hover{background:#d13956;}
+#freelanceJob{display:none; background:#e0f7fa; padding:60px;}
+#freelanceJob h2{color:#4b6cb7; margin-bottom:20px;}
+#freelanceJob p{margin-bottom:30px;}
+#freelanceJob .contact-box{max-width:500px; margin:auto;}
+#freelanceJob .step{display:none; transition:all 0.5s ease;}
+#freelanceJob .step.active{display:block;}
+#freelanceJob .contact-box button{margin-top:15px; margin-right:10px;}
+.field{position:relative; margin:15px 0;}
+.field input{width:100%; padding:12px; border-radius:10px; border:1px solid #ccc;}
+.field label{position:absolute; left:12px; top:50%; transform:translateY(-50%); background:var(--card-bg); padding:0 5px; color:#777;}
+.field input:focus+label, .field input:not(:placeholder-shown)+label{top:-8px; font-size:12px; color:var(--accent);}
+.toggle{position:absolute; right:12px; top:50%; cursor:pointer;}
+.auth-modal{display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(6px); justify-content:center; align-items:center; z-index:200;}
+.auth-box{background:var(--card-bg); width:360px; padding:30px; border-radius:20px;}
+.auth-tabs{display:flex; margin-bottom:20px;}
+.auth-tabs button{flex:1; padding:10px; border:none; background:#ddd; cursor:pointer;}
+.auth-tabs button.active{background:var(--accent); color:white;}
+.auth-form{display:none;}
+.auth-form.active{display:block;}
+.auth-btn{width:100%; padding:12px; background:var(--accent); color:white; border:none; border-radius:12px; transition:.3s; cursor:pointer;}
+.auth-btn:hover{background:#d13956;}
+#adminPanel{display:none; position:fixed; top:5%; left:50%; transform:translateX(-50%); width:90%; max-width:900px; background:var(--primary-bg); color:var(--text-color); padding:30px; border-radius:20px; box-shadow:0 20px 40px rgba(0,0,0,0.3); z-index:500; overflow:auto; max-height:90vh;}
+#adminPanel h2, #adminPanel h3{margin-bottom:20px;}
+#adminPanel button{background:var(--accent); border:none; padding:10px 15px; border-radius:10px; cursor:pointer; color:white; margin-top:10px;}
+#adminPanel button:hover{background:#d13956;}
+footer{background:var(--navbar-footer); color:white; padding:20px; text-align:center;}
+
+</style>
+</head>
+<body>
+
+<nav>
+<h2>Learnify</h2>
+<div>
+  <a onclick="scrollToSection('home')">Home</a>
+  <a onclick="scrollToSection('courses')">Courses</a>
+  <a onclick="scrollToSection('dashboard')">Dashboard</a>
+  <a onclick="scrollToSection('about')">About Us</a>
+  <a onclick="scrollToSection('contact')">Contact</a>
+  <a onclick="showFreelanceJob()">Freelance Job</a>
+  <span id="userDisplay" style="margin-left:15px; font-weight:bold;"></span>
+  <button id="authBtn" onclick="openAuth()">Login / Register</button>
+  <button id="logoutBtn" onclick="logoutUser()" style="display:none;">Logout</button>
+  <button id="adminBtn" onclick="toggleAdminPanel()" style="display:none;">Admin Panel</button>
+</div>
+</nav>
+
+<header id="home">
+<div class="hero">
+<h1>Fall in love with learning</h1>
+<p>Interactive classes, smart dashboards & immersive learning.</p>
+<div class="btn-group">
+<button onclick="scrollToSection('courses')">Book  Class</button>
+<button class="explore" onclick="scrollToSection('dashboard')">Explore</button>
+</div>
+</div>
+</header>
+
+<button id="floatingBtn" onclick="scrollToSection('courses')">Book Free Class</button>
+
+<!-- Courses Section -->
+<section id="courses">
+<h2>Popular Courses</h2>
+<div class="course-container" id="courseContainer"></div>
+</section>
+
+<section id="sessions">
+  <h2>Advanced Sessions (Class 9–12)</h2>
+  <div id="sessionContainer" class="course-container"></div>
+</section>
+
+
+
+<!-- Enrollment Modal -->
+<div id="enrollModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:999;">
+  <div style="background:#795c5c; padding:20px; width:320px; border-radius:10px;">
+    <h3 id="enrollCourseTitle">Enroll in Course</h3>
+    <form id="enrollForm">
+      <input type="text" id="enrollName" placeholder="Full Name" required />
+      <input type="email" id="enrollEmail" placeholder="Email" required />
+      <input type="tel" id="enrollPhone" placeholder="Phone" required />
+    
+      <!-- Terms & Conditions -->
+      <label>
+        <input type="checkbox" id="termsCheckbox" /> I agree to the <a href="#" target="_blank">Terms & Conditions</a>
+      </label>
+    
+      <button type="button" onclick="submitEnrollment()">Submit</button>
+    </form>
+    
+    <button onclick="submitEnrollment()">Submit</button>
+    <button onclick="closeEnroll()" style="background:rgb(178, 163, 163); color:rgb(181, 124, 124);">Cancel</button>
+  </div>
+</div>
+
+
+<section id="dashboard" class="dashboard">
+<h2>User Dashboard</h2>
+<div class="dashboard-cards">
+<div class="d-card"><h1>5</h1><p>Courses</p><div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div></div>
+<div class="d-card"><h1>18</h1><p>Sessions</p><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div></div>
+<div class="d-card"><h1>72%</h1><p>Progress</p><div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div></div>
+</div>
+</section>
+
+<section id="about" class="about">
+<h2>About Us</h2>
+<p>
+Learnify is an interactive online learning platform designed to make education engaging and effective. We combine expert content, animated dashboards, and immersive visuals for an engaging experience.
+</p>
+</section>
+
+
+<section id="contact">
+  <h2>Contact Us</h2>
+  <div class="contact-box" style="text-align:center; font-size:1.1rem;">
+    <p>Email: <a href="mailto:youremail@example.com" style="color:var(--accent); text-decoration:underline;">youremail@example.com</a></p>
+    <p>Phone: <a href="tel:+911234567890" style="color:var(--accent); text-decoration:underline;">+91 12345 67890</a></p>
+  </div>
+</section>
+
+
+<section id="freelanceJob">
+<h2>Apply for Freelance Teaching Job</h2>
+<p>Join Learnify as a freelance teacher. Fill in all details. Admin will review and approve.</p>
+<div class="contact-box" id="freelanceForm">
+  <div class="step active">
+    <div class="field"><input type="text" id="fJobName" placeholder=" " required><label>Full Name</label></div>
+    <div class="field"><input type="email" id="fJobEmail" placeholder=" " required><label>Email</label></div>
+    <button onclick="nextStep(1)">Next</button>
+  </div>
+  <div class="step">
+    <div class="field"><input type="text" id="fJobQualification" placeholder=" " required><label>Qualification</label></div>
+    <div class="field"><input type="text" id="fJobSubjects" placeholder=" " required><label>Subjects / Sessions</label></div>
+    <button onclick="prevStep(0)">Previous</button>
+    <button onclick="nextStep(2)">Next</button>
+  </div>
+  <div class="step">
+    <div class="field"><input type="number" id="fJobFees" placeholder=" " required><label>Expected Fees ($ per session)</label></div>
+    <div class="field"><input type="text" id="fJobProof" placeholder=" " required><label>Proof / Certificates (Link)</label></div>
+    <button onclick="prevStep(1)">Previous</button>
+    <button onclick="submitFreelanceJob()">Submit</button>
+  </div>
+</div>
+</section>
+
+<!-- Auth Modal -->
+ <!-- Terms & Conditions -->
+<div style="margin:15px 0; font-size:0.9rem;">
+  <input type="checkbox" id="termsCheck" style="margin-right:5px;">
+  <label for="termsCheck">
+    I have read and agree to the 
+    <a href="#" onclick="showTerms()" style="color:var(--accent); text-decoration:underline;">Terms & Conditions</a>
+  </label>
+</div>
+
+<button class="auth-btn" onclick="registerUser()">Register</button>
+<div class="auth-modal" id="termsModal" style="display:none; justify-content:center; align-items:center; background:rgba(0,0,0,0.6);">
+  <div style="background:white; width:450px; max-height:75vh; overflow:auto; padding:25px; border-radius:12px;">
+    <h3 style="margin-bottom:10px;">Terms & Conditions</h3>
+    <p style="font-size:0.9rem; line-height:1.5;">
+      <b>Last Updated:</b> Jan 11, 2026<br><br>
+      Welcome to Learnify. By creating an account and using this platform, you agree to these terms. Please read carefully:
+    </p>
+    <ul style="font-size:0.9rem; line-height:1.5; padding-left:20px;">
+      <li><b>Account Responsibility:</b> You are responsible for all activity under your account. Keep your credentials secure.</li>
+      <li><b>Use of Platform:</b> Use Learnify for lawful educational purposes only. Harassment, spamming, or harmful behavior is prohibited.</li>
+      <li><b>Enrollment & Payments:</b> All course enrollments are binding. Refunds follow the platform’s refund policy.</li>
+      <li><b>Intellectual Property:</b> Content on Learnify is protected by copyright and cannot be shared or reproduced without permission.</li>
+      <li><b>Privacy:</b> Personal information is collected for account and enrollment purposes. Your data will not be shared without consent.</li>
+      <li><b>Liability:</b> Learnify is not responsible for technical issues, data loss, or misuse of the platform.</li>
+      <li><b>Termination:</b> Violation of terms may result in suspension or permanent termination of your account.</li>
+      <li><b>Modifications:</b> Learnify may update these terms at any time. Continued use constitutes acceptance of changes.</li>
+    </ul>
+    <button onclick="closeTerms()" style="margin-top:15px; background:var(--accent); color:white; border:none; padding:10px 15px; border-radius:8px;">Close</button>
+  </div>
+</div>
+
+<div class="auth-modal" id="authModal">
+<div class="auth-box">
+<div class="auth-tabs">
+<button class="active" onclick="showTab('login',this)">Login</button>
+<button onclick="showTab('register',this)">Register</button>
+</div>
+<div class="auth-form active" id="login">
+<div class="field"><input type="text" id="loginUsername" placeholder=" "><label>Username</label></div>
+<div class="field"><input type="password" id="lp" placeholder=" "><label>Password</label><span class="toggle" onclick="toggle('lp')">👁️</span></div>
+<button class="auth-btn" onclick="loginUser()">Login</button>
+</div>
+<div class="auth-form" id="register">
+<div class="field"><input type="text" id="registerUsername" placeholder=" "><label>Username</label></div>
+<div class="field"><input type="email" id="registerEmail" placeholder=" "><label>Email</label></div>
+<div class="field"><input type="password" id="rp" placeholder=" "><label>Password</label><span class="toggle" onclick="toggle('rp')">👁️</span></div>
+<button class="auth-btn" onclick="registerUser()">Register</button>
+</div>
+</div>
+</div>
+
+<!-- Admin Panel -->
+<div id="adminPanel">
+<h2>Admin Dashboard</h2>
+
+<section id="adminCourses">
+  <h3>Manage Courses</h3>
+  <div>
+    <input type="text" id="newCourseTitle" placeholder="Course Title">
+
+    <input type="text" id="newCourseSpeaker" placeholder="Speaker Name">
+    
+    <input type="text" id="newCourseDesignation" placeholder="Speaker Designation">
+    
+    <input type="number" id="newCoursePrice" placeholder="Price">
+    
+    <input type="datetime-local" id="newCourseSchedule">
+    
+    <input type="file" id="newCourseImage" accept="image/png, image/jpeg">
+    
+    <button onclick="addCourse()">Add Course</button>
+    
+    <button onclick="addCourse()">Add Course</button>
+  </div>
+  
+  <div id="courseList" style="margin-top:15px;"></div>
+  </section>
+  
+  
+
+<section id="adminFreelance">
+<h3>Freelance Applications</h3>
+<div id="jobList"></div>
+</section>
+
+<button onclick="closeAdmin()">Close Admin Panel</button>
+</div>
+
+<footer>© 2026 Learnify</footer>
+
+
+<script>
+let users = JSON.parse(localStorage.getItem("learnify_users")) || [];
+
+  // 🔐 DEFAULT ADMIN ACCOUNT (ADD HERE)
+  if(!users.find(u => u.email === "admin@learnify.com")){
+    users.push({
+      username: "Admin",
+      email: "admin@learnify.com",
+      password: "Admin@123",
+      role: "admin"
+    });
+    localStorage.setItem("learnify_users", JSON.stringify(users));
+  }
+
+  // rest of your code continues...
+
+
+let currentUser = JSON.parse(localStorage.getItem("learnify_currentUser")) || null;
+
+function isValidName(name){
+  return /^[A-Za-z ]{3,30}$/.test(name);
+}
+
+function isValidEmail(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isStrongPassword(password){
+  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
+}
+
+if(currentUser){
+  isLoggedIn = true;
+  userRole = currentUser.role;
+}
+
+// Scroll animations
+const sections = document.querySelectorAll("section");
+window.addEventListener("scroll", ()=>{
+  sections.forEach(sec=>{
+    if(sec.getBoundingClientRect().top < window.innerHeight-100){sec.classList.add("show");}
+  });
+});
+
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:"smooth"});}
+function showFreelanceJob(){document.getElementById("freelanceJob").style.display="block"; scrollToSection("freelanceJob");}
+function openAuth(){document.getElementById("authModal").style.display="flex";}
+function closeAuth(){document.getElementById("authModal").style.display="none";}
+function showTab(id,btn){
+  document.querySelectorAll(".auth-form").forEach(f=>f.classList.remove("active"));
+  document.querySelectorAll(".auth-tabs button").forEach(b=>b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  btn.classList.add("active");
+}
+function toggle(id){let f=document.getElementById(id); f.type=f.type==="password"?"text":"password";}
+
+// LOGIN/REGISTER (mock)
+let isLoggedIn = false;
+let userRole = "user"; 
+
+function loginUser(){
+  const email = document.getElementById("loginUsername").value.trim();
+  const password = document.getElementById("lp").value.trim();
+
+  let users = JSON.parse(localStorage.getItem("learnify_users")) || [];
+
+  const user = users.find(u => u.email === email && u.password === password);
+
+  if(!user){
+    alert("Invalid email or password");
+    return;
+  }
+
+  isLoggedIn = true;
+  userRole = user.role;
+
+  document.getElementById("userDisplay").innerText = `Hello, ${user.username}`;
+  document.getElementById("authBtn").style.display = "none";
+  document.getElementById("logoutBtn").style.display = "inline-block";
+
+  if(userRole === "admin"){
+    document.getElementById("adminBtn").style.display = "inline-block";
+  }
+
+  closeAuth();
+  renderCourses();
+  renderAdminCourses();
+
+ renderJobs(); renderSessions();
+}
+// Show/Hide Terms Modal
+function showTerms() {
+  document.getElementById("termsModal").style.display = "flex";
+}
+
+function closeTerms() {
+  document.getElementById("termsModal").style.display = "none";
+}
+
+// Updated Register Function
+function registerUser(){
+  const username = document.getElementById("registerUsername").value.trim();
+  const email = document.getElementById("registerEmail").value.trim();
+  const password = document.getElementById("rp").value.trim();
+  const agreed = document.getElementById("termsCheck").checked;
+
+  if(!username || !email || !password){
+    alert("All fields are required");
+    return;
+  }
+
+  if(!isValidName(username)){
+    alert("Name should contain only letters (min 3 characters)");
+    return;
+  }
+
+  if(!isValidEmail(email)){
+    alert("Enter a valid email address");
+    return;
+  }
+
+  if(!isStrongPassword(password)){
+    alert(
+      "Password must contain:\n" +
+      "- Minimum 8 characters\n" +
+      "- One uppercase letter\n" +
+      "- One lowercase letter\n" +
+      "- One number"
+    );
+    return;
+  }
+
+  if(!agreed){
+    alert("You must agree to the Terms & Conditions");
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem("learnify_users")) || [];
+  if(users.find(u => u.email === email)){
+    alert("Email already registered. Please login.");
+    return;
+  }
+
+  users.push({
+    username,
+    email,
+    password,   // (plain for now — backend needed for hashing)
+    role: "user"
+  });
+
+  localStorage.setItem("learnify_users", JSON.stringify(users));
+
+  alert("✅ Registration successful! Please login.");
+  showTab("login", document.querySelector(".auth-tabs button"));
+}
+
+
+function logoutUser(){
+  isLoggedIn = false;
+  userRole = "user";
+  currentUser = null;
+
+  localStorage.removeItem("learnify_currentUser");
+
+  document.getElementById("userDisplay").innerText = "";
+  document.getElementById("authBtn").style.display = "inline-block";
+  document.getElementById("logoutBtn").style.display = "none";
+  document.getElementById("adminBtn").style.display = "none";
+
+  renderCourses();
+  renderSessions();
+}
+
+
+// Courses
+let courses = [
+  {title:"Class 10 – Maths", price:100, enrollments:[], formLink:""},
+  {title:"Programming", price:150, enrollments:[], formLink:""},
+  {title:"Competitive Exams", price:120, enrollments:[], formLink:""}
+];
+// ================= SESSIONS (Class 9–12) =================
+
+let sessions = [
+  {
+    class: "Class 9",
+    subject: "Mathematics – Advanced",
+    schedule: "2026-02-10T16:00",
+    enrollments: []
+  },
+  {
+    class: "Class 10",
+    subject: "Physics – Advanced",
+    schedule: "2026-02-12T17:00",
+    enrollments: []
+  },
+  {
+    class: "Class 11",
+    subject: "Chemistry – Advanced",
+    schedule: "2026-02-15T18:00",
+    enrollments: []
+  },
+  {
+    class: "Class 12",
+    subject: "Biology – Advanced",
+    schedule: "2026-02-18T18:30",
+    enrollments: []
+  }
+];
+
+
+
+function renderCourses() {
+  const container = document.getElementById("courseContainer");
+  container.innerHTML = "";
+  courses.forEach((c, i) => {
+    const div = document.createElement("div");
+    div.className = "course";
+    div.innerHTML = `
+  ${c.image ? `<img src="${c.image}" class="animated-course">` : ""}
+
+  <div class="course-body">
+    <span class="badge">🔥 Popular</span>
+
+    <h3 class="course-title">${c.title}</h3>
+
+    <div class="speaker-hero">
+  <div class="teacher-line">Teacher: <span class="teacher-name">${c.speaker}</span></div>
+  <div class="designation-line">Designation: <span class="designation-name">${c.designation}</span></div>
+</div>
+
+
+<div class="time-pill">
+  Date: ${new Date(c.schedule).toLocaleDateString()} | Time: ${new Date(c.schedule).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+</div>
+
+`;
+
+
+
+ if (isLoggedIn && userRole === "user") {
+  const enrollBtn = document.createElement("button");
+  enrollBtn.className = "enroll-btn";
+  enrollBtn.innerText = "Enroll Now";
+  enrollBtn.onclick = () => openEnroll(c);
+  div.appendChild(enrollBtn);
+}
+
+    if (userRole === "admin") {
+      const delBtn = document.createElement("button");
+      delBtn.innerText = "Delete";
+      delBtn.style.background = "red";
+      delBtn.onclick = () => {
+        if (confirm("Delete this course?")) {
+          courses.splice(i, 1);
+          renderCourses();
+          renderAdminCourses();
+        }
+      };
+      div.appendChild(delBtn);
+    }
+
+    container.appendChild(div);
+
+    // Animate each card
+    setTimeout(() => div.classList.add("show"), i * 150);
+  });
+}
+
+function renderSessions(){
+  const container = document.getElementById("sessionContainer");
+  container.innerHTML = "";
+
+  sessions.forEach((s, i) => {
+    const div = document.createElement("div");
+    div.className = "course";
+
+    div.innerHTML = `
+      <span class="badge">Advanced</span>
+      <h3>${s.class}</h3>
+      <p>${s.subject}</p>
+      <div class="time-pill">
+        ${new Date(s.schedule).toLocaleDateString()} |
+        ${new Date(s.schedule).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+      </div>
+    `;
+
+    // ✅ SESSION ENROLL BUTTON
+    if(isLoggedIn && userRole === "user"){
+      const enrollBtn = document.createElement("button");
+      enrollBtn.className = "enroll-btn";
+      enrollBtn.innerText = "Enroll Now";
+      enrollBtn.onclick = () => openSessionEnroll(s);
+      div.appendChild(enrollBtn);
+    }
+
+    container.appendChild(div);
+    setTimeout(()=>div.classList.add("show"), i * 150);
+  });
+}
+
+
+
+// Enrollment
+
+/* ================= ENROLLMENT MODULE ================= */
+
+const enrollModal = document.getElementById("enrollModal");
+let selectedCourse = null;
+
+// Open enroll form when user clicks Enroll
+function openEnroll(course){
+  if(!isLoggedIn){
+    alert("Please login to enroll!");
+    openAuth();
+    return;
+  }
+  selectedCourse = course;
+  document.getElementById("enrollCourseTitle").innerText =
+    `Enroll in ${course.title}`;
+  enrollModal.style.display = "flex";
+}
+function openSessionEnroll(session){
+  if(!isLoggedIn){
+    alert("Please login to enroll!");
+    openAuth();
+    return;
+  }
+
+  selectedCourse = session;
+
+  document.getElementById("enrollCourseTitle").innerText =
+    `Enroll in ${session.class} – ${session.subject}`;
+
+  enrollModal.style.display = "flex";
+}
+
+
+// Close enroll modal
+function closeEnroll(){
+  enrollModal.style.display = "none";
+}
+
+// Submit user details and store inside course
+function submitEnrollment(){
+  const name  = document.getElementById("enrollName").value.trim();
+  const email = document.getElementById("enrollEmail").value.trim();
+  const phone = document.getElementById("enrollPhone").value.trim();
+
+  if(!name || !email || !phone){
+    alert("Please fill all details");
+    return;
+  }
+
+  // Store user details inside selected course
+  selectedCourse.enrollments.push({
+    name: name,
+    email: email,
+    phone: phone
+  });
+
+ const courseName =
+  selectedCourse.title ||
+  `${selectedCourse.class} – ${selectedCourse.subject}`;
+
+alert(`You are successfully enrolled in ${courseName}!`);
+
+
+  // Clear form
+  document.getElementById("enrollName").value = "";
+  document.getElementById("enrollEmail").value = "";
+  document.getElementById("enrollPhone").value = "";
+
+  closeEnroll();
+}
+
+/* ===================================================== */
+
+// Freelance Job Form
+let currentStep=0;
+function nextStep(step){document.querySelectorAll("#freelanceForm .step").forEach((s,i)=>{s.classList.remove("active");}); document.querySelectorAll("#freelanceForm .step")[step].classList.add("active"); currentStep=step;}
+function prevStep(step){nextStep(step);}
+let freelanceJobs=[];
+function submitFreelanceJob(){
+  const name = document.getElementById("fJobName").value;
+  const email = document.getElementById("fJobEmail").value;
+  const qualification = document.getElementById("fJobQualification").value;
+  const subjects = document.getElementById("fJobSubjects").value;
+  const fees = document.getElementById("fJobFees").value;
+  const proof = document.getElementById("fJobProof").value;
+  if(!name || !email || !qualification || !subjects || !fees || !proof){alert("Fill all fields"); return;}
+  freelanceJobs.push({name,email,qualification,subjects,fees,proof});
+  alert("Freelance application submitted!");
+  document.querySelectorAll("#freelanceForm input").forEach(i=>i.value=""); nextStep(0); renderJobs();
+}
+
+// Admin Panel
+function toggleAdminPanel(){document.getElementById("adminPanel").style.display="block";}
+function closeAdmin(){document.getElementById("adminPanel").style.display="none";}
+function addCourse(){
+  const title = document.getElementById("newCourseTitle").value.trim();
+  const speaker = document.getElementById("newCourseSpeaker").value.trim();
+  const designation = document.getElementById("newCourseDesignation").value.trim();
+  const price = document.getElementById("newCoursePrice").value;
+  const schedule = document.getElementById("newCourseSchedule").value;
+  const imageFile = document.getElementById("newCourseImage").files[0];
+
+  if(!title || !speaker || !designation || !price || !schedule || !imageFile){
+    alert("❌ Please fill ALL course details");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e){
+    courses.push({
+      title,
+      speaker,
+      designation,
+      price,
+      schedule,
+      image: e.target.result,
+      enrollments: [],
+      formLink: ""
+    });
+
+    saveCourses();
+    renderCourses();
+    renderAdminCourses();
+
+    // Clear inputs
+    document.getElementById("newCourseTitle").value = "";
+    document.getElementById("newCourseSpeaker").value = "";
+    document.getElementById("newCourseDesignation").value = "";
+    document.getElementById("newCoursePrice").value = "";
+    document.getElementById("newCourseSchedule").value = "";
+    document.getElementById("newCourseImage").value = "";
+
+    alert("✅ Course added successfully");
+  };
+
+  reader.readAsDataURL(imageFile);
+}
+
+
+
+function clearAdminInputs(){
+  document.getElementById("newCourseTitle").value="";
+  document.getElementById("newCoursePrice").value="";
+  document.getElementById("newCourseImage").value="";
+  document.getElementById("newCourseDateTime").value="";
+}
+
+
+/* ========== ADMIN: VIEW ENROLLED USERS ========== */
+
+function renderAdminCourses(){
+  const cl = document.getElementById("courseList");
+  cl.innerHTML = "";
+
+  courses.forEach((c,i)=>{
+    const div = document.createElement("div");
+    div.style.border = "1px solid #ccc";
+    div.style.padding = "10px";
+    div.style.marginBottom = "10px";
+
+    div.innerHTML = `
+  ${c.image ? `<img src="${c.image}" style="width:100%; border-radius:12px; margin-bottom:10px;">` : ""}
+  <b>${c.title}</b> - ₹${c.price}<br>
+
+  <input 
+    type="url" 
+    placeholder="Paste Google Form link"
+    value="${c.formLink || ""}"
+    style="width:100%; margin:8px 0; padding:6px;"
+    onchange="saveCourseFormLink(${i}, this.value)"
+  >
+
+  <button onclick="toggleEnrollments(${i})">
+    View Enrollments (${c.enrollments.length})
+  </button>
+
+  <button onclick="deleteAdminCourse(${i})" style="background:red;">
+    Delete Course
+  </button>
+
+  <div id="enrollList${i}" style="display:none; margin-top:10px;"></div>
+`;
+
+
+
+    cl.appendChild(div);
+  });
+}
+
+function renderAdminSessions() {
+  const container = document.getElementById("sessionList"); // make sure you have <div id="sessionList"></div> in admin HTML
+  container.innerHTML = "";
+
+  sessions.forEach((s, i) => {
+    const div = document.createElement("div");
+    div.style.border = "1px solid #ccc";
+    div.style.padding = "10px";
+    div.style.marginBottom = "10px";
+
+    div.innerHTML = `
+      <b>${s.class} – ${s.subject}</b> | Date: ${new Date(s.schedule).toLocaleString()}<br>
+
+      <button onclick="deleteSession(${i})" style="background:red; color:white;">
+        Delete Session
+      </button>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+// Show / hide enrolled users
+function toggleEnrollments(index){
+  const listDiv = document.getElementById(`enrollList${index}`);
+  const course = courses[index];
+
+  if(listDiv.style.display === "block"){
+    listDiv.style.display = "none";
+    return;
+  }
+
+  if(course.enrollments.length === 0){
+    listDiv.innerHTML = "<i>No students enrolled</i>";
+  } else {
+    listDiv.innerHTML = course.enrollments
+      .map((e,idx)=>`
+        <div style="border-bottom:1px solid #ddd; padding:5px 0;">
+          <b>${idx+1}. ${e.name}</b><br>
+          Email: ${e.email}<br>
+          Phone: ${e.phone}
+        </div>
+      `)
+      .join("");
+  }
+
+  listDiv.style.display = "block";
+}
+
+function deleteSession(index){
+  if(confirm("Delete this session?")){
+    sessions.splice(index, 1);
+    renderAdminSessions();
+    alert("✅ Session deleted successfully");
+  }
+}
+
+function addSession() {
+  const cls = document.getElementById("newSessionClass").value.trim();
+  const subject = document.getElementById("newSessionSubject").value.trim();
+  const schedule = document.getElementById("newSessionSchedule").value;
+
+  if(!cls || !subject || !schedule){
+    alert("Please fill all fields!");
+    return;
+  }
+
+  sessions.push({
+    class: cls,
+    subject,
+    schedule,
+    enrollments: [],
+    formLink: ""
+  });
+
+  renderAdminSessions();
+
+  // Clear inputs
+  document.getElementById("newSessionClass").value = "";
+  document.getElementById("newSessionSubject").value = "";
+  document.getElementById("newSessionSchedule").value = "";
+
+  alert("✅ Session added successfully");
+}
+function toggleAdminPanel(){
+  document.getElementById("adminPanel").style.display="block";
+  renderAdminCourses();   // existing
+  renderAdminSessions();  // new
+}
+
+
+// Delete course (admin)
+function deleteAdminCourse(index){
+  if(confirm("Delete this course?")){
+    courses.splice(index,1);
+    renderCourses();
+    renderAdminCourses();
+  }
+}
+
+/* =============================================== */
+
+function renderJobs(){
+  const jl = document.getElementById("jobList"); jl.innerHTML="";
+  freelanceJobs.forEach((j,i)=>{
+    const div = document.createElement("div");
+    div.style.border="1px solid #ccc"; div.style.padding="10px"; div.style.marginBottom="10px";
+    div.innerHTML=`<b>${j.name}</b> | ${j.email} | ${j.qualification} | ${j.subjects} | $${j.fees} | <a href="${j.proof}" target="_blank">Proof</a>`;
+    jl.appendChild(div);
+  });
+}
+/* ========== 1️⃣ SAVE COURSES TO localStorage ========== */
+
+// Load saved data on page load
+const savedCourses = localStorage.getItem("learnify_courses");
+if(savedCourses){
+  courses = JSON.parse(savedCourses);
+}
+
+// Save courses whenever data changes
+function saveCourses(){
+  localStorage.setItem("learnify_courses", JSON.stringify(courses));
+}
+
+/* Hook save into existing actions */
+const originalSubmitEnrollment = submitEnrollment;
+submitEnrollment = function(){
+  originalSubmitEnrollment();
+  saveCourses();
+};
+
+const originalAddCourse = addCourse;
+addCourse = function(){
+  originalAddCourse();
+  saveCourses();
+};
+
+/* ========== 2️⃣ EMAIL CONFIRMATION (SIMULATION) ========== */
+
+function sendEmailConfirmation(user, course){
+  alert(
+    `📧 Email Sent!\n\nTo: ${user.email}\nSubject: Course Enrollment Confirmation\n\n` +
+    `Hello ${user.name},\nYou are successfully enrolled in "${course.title}".`
+  );
+}
+
+// Override enrollment to include email confirmation
+function submitEnrollment(){
+  if(!selectedCourse){
+    alert("Please select a course first!");
+    return;
+  }
+
+  const name  = document.getElementById("enrollName").value.trim();
+  const email = document.getElementById("enrollEmail").value.trim();
+  const phone = document.getElementById("enrollPhone").value.trim();
+  const termsAccepted = document.getElementById("termsCheckbox").checked;
+
+  if(!name || !email || !phone){
+    alert("Please fill all details");
+    return;
+  }
+
+  if(!termsAccepted){
+    alert("You must agree to the Terms & Conditions.");
+    return;
+  }
+
+  // Save enrollment
+  selectedCourse.enrollments.push({ name, email, phone });
+  saveCourses();
+
+  document.getElementById("enrollForm").reset();
+  closeEnroll();
+
+  // 🔗 Redirect to course-specific Google Form
+  if(selectedCourse.formLink){
+    const encodedCourse = encodeURIComponent(selectedCourse.title);
+    const finalLink = selectedCourse.formLink.replace("COURSE_NAME", encodedCourse);
+    window.open(finalLink, "_blank");
+  } else {
+    alert("Google Form not configured for this course yet.");
+  }
+}
+
+/* ========== 3️⃣ DOWNLOAD ENROLLMENTS AS CSV (ADMIN) ========== */
+
+function downloadEnrollmentsCSV(){
+  let csv = "Course,Name,Email,Phone\n";
+
+  courses.forEach(course=>{
+    course.enrollments.forEach(e=>{
+      csv += `"${course.title}","${e.name}","${e.email}","${e.phone}"\n`;
+    });
+  });
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "learnify_enrollments.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+function saveCourseFormLink(index, link){
+  courses[index].formLink = link;
+  saveCourses();
+  alert("✅ Google Form link saved for this course");
+}
+
+
+/* Add CSV button to admin panel */
+const adminSection = document.getElementById("adminCourses");
+const csvBtn = document.createElement("button");
+csvBtn.innerText = "Download Enrollments (CSV)";
+csvBtn.style.marginLeft = "10px";
+csvBtn.onclick = downloadEnrollmentsCSV;
+adminSection.appendChild(csvBtn);
+
+/* ======================================================= */
+
+// Initial render
+renderCourses();
+renderSessions();
+</script>
+
+</body>
+</html>
