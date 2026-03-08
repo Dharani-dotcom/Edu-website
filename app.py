@@ -3,17 +3,19 @@ import mysql.connector
 import csv
 import io
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
 app = Flask(__name__)
-app.secret_key = "super-secret-key"
+app.secret_key = os.environ.get("SECRET_KEY", "super-secret-key")
 
 # ---------------- DATABASE ----------------
 def get_db():
     conn = mysql.connector.connect(
-        host="YOUR_MYSQL_HOST",      # e.g., 'localhost' or cloud host
-        user="YOUR_DB_USER",         # e.g., 'root'
-        password="YOUR_DB_PASSWORD", # e.g., 'password'
-        database="learnify"
+        host=os.environ.get("DB_HOST"),
+        user=os.environ.get("DB_USER"),
+        password=os.environ.get("DB_PASSWORD"),
+        database=os.environ.get("DB_NAME"),
+        port=int(os.environ.get("DB_PORT", 3306))
     )
     return conn
 
@@ -21,56 +23,56 @@ def get_db():
 def init_db():
     db = get_db()
     cursor = db.cursor()
-    # Users table
+    # Users
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(100),
-        email VARCHAR(150) UNIQUE,
-        password TEXT,
-        role VARCHAR(20)
-    )
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(100),
+            email VARCHAR(150) UNIQUE,
+            password TEXT,
+            role VARCHAR(20)
+        )
     """)
-    # Courses table
+    # Courses
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS courses (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        title VARCHAR(200),
-        speaker VARCHAR(200),
-        designation VARCHAR(200),
-        price INT,
-        schedule VARCHAR(200),
-        form_link TEXT
-    )
+        CREATE TABLE IF NOT EXISTS courses (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            title VARCHAR(200),
+            speaker VARCHAR(200),
+            designation VARCHAR(200),
+            price INT,
+            schedule VARCHAR(200),
+            form_link TEXT
+        )
     """)
-    # Enrollments table
+    # Enrollments
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS enrollments (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        course_id INT,
-        name VARCHAR(200),
-        email VARCHAR(200),
-        phone VARCHAR(50)
-    )
+        CREATE TABLE IF NOT EXISTS enrollments (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            course_id INT,
+            name VARCHAR(200),
+            email VARCHAR(200),
+            phone VARCHAR(50)
+        )
     """)
-    # Sessions table
+    # Sessions
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS sessions (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        class VARCHAR(100),
-        subject VARCHAR(100),
-        schedule VARCHAR(200)
-    )
+        CREATE TABLE IF NOT EXISTS sessions (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            class VARCHAR(100),
+            subject VARCHAR(100),
+            schedule VARCHAR(200)
+        )
     """)
 
-    # Create default admin if not exists
+    # Default admin
     cursor.execute("SELECT * FROM users WHERE email=%s", ("admin@learnify.com",))
-    admin = cursor.fetchone()
-    if not admin:
+    if cursor.fetchone() is None:
         cursor.execute("""
             INSERT INTO users (username,email,password,role)
             VALUES (%s,%s,%s,%s)
         """, ("Admin", "admin@learnify.com", generate_password_hash("Admin@123"), "admin"))
+
     db.commit()
     cursor.close()
     db.close()
@@ -265,4 +267,3 @@ def download_csv():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
-
