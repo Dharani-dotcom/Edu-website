@@ -1,78 +1,80 @@
 from flask import Flask, render_template, request, redirect, session, send_file
 import mysql.connector
-import csv
-import io
+from mysql.connector import Error
+import csv, io, os
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "super-secret-key")
 
-# ---------------- DATABASE ----------------
+# ---------------- MySQL CONNECTION ----------------
 def get_db():
-    conn = mysql.connector.connect(
-        host=os.environ.get("DB_HOST"),
-        user=os.environ.get("DB_USER"),
-        password=os.environ.get("DB_PASSWORD"),
-        database=os.environ.get("DB_NAME"),
-        port=int(os.environ.get("DB_PORT", 3306))
-    )
-    return conn
+    try:
+        conn = mysql.connector.connect(
+            host=os.environ.get("DB_HOST"),
+            user=os.environ.get("DB_USER"),
+            password=os.environ.get("DB_PASSWORD"),
+            database=os.environ.get("DB_NAME"),
+            port=int(os.environ.get("DB_PORT", 3306))
+        )
+        return conn
+    except Error as e:
+        print("Error connecting to MySQL:", e)
+        return None
 
 # ---------------- DB INIT ----------------
 def init_db():
     db = get_db()
+    if db is None:
+        print("Database connection failed!")
+        return
     cursor = db.cursor()
-    # Users
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            username VARCHAR(100),
-            email VARCHAR(150) UNIQUE,
-            password TEXT,
-            role VARCHAR(20)
+            username VARCHAR(255),
+            email VARCHAR(255) UNIQUE,
+            password VARCHAR(255),
+            role VARCHAR(50)
         )
     """)
-    # Courses
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS courses (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            title VARCHAR(200),
-            speaker VARCHAR(200),
-            designation VARCHAR(200),
+            title VARCHAR(255),
+            speaker VARCHAR(255),
+            designation VARCHAR(255),
             price INT,
-            schedule VARCHAR(200),
-            form_link TEXT
+            schedule VARCHAR(255),
+            form_link VARCHAR(255)
         )
     """)
-    # Enrollments
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS enrollments (
             id INT AUTO_INCREMENT PRIMARY KEY,
             course_id INT,
-            name VARCHAR(200),
-            email VARCHAR(200),
-            phone VARCHAR(50)
+            name VARCHAR(255),
+            email VARCHAR(255),
+            phone VARCHAR(50),
+            FOREIGN KEY (course_id) REFERENCES courses(id)
         )
     """)
-    # Sessions
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS sessions (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            class VARCHAR(100),
-            subject VARCHAR(100),
-            schedule VARCHAR(200)
+            class VARCHAR(255),
+            subject VARCHAR(255),
+            schedule VARCHAR(255)
         )
     """)
-
-    # Default admin
+    # default admin
     cursor.execute("SELECT * FROM users WHERE email=%s", ("admin@learnify.com",))
-    if cursor.fetchone() is None:
+    admin = cursor.fetchone()
+    if not admin:
         cursor.execute("""
-            INSERT INTO users (username,email,password,role)
-            VALUES (%s,%s,%s,%s)
+            INSERT INTO users (username, email, password, role)
+            VALUES (%s, %s, %s, %s)
         """, ("Admin", "admin@learnify.com", generate_password_hash("Admin@123"), "admin"))
-
     db.commit()
     cursor.close()
     db.close()
@@ -102,7 +104,6 @@ def register():
     if not username or not email or not password:
         return "All fields required", 400
     hashed_password = generate_password_hash(password)
-
     db = get_db()
     cursor = db.cursor()
     try:
@@ -111,12 +112,12 @@ def register():
             VALUES (%s,%s,%s,%s)
         """, (username, email, hashed_password, "user"))
         db.commit()
-        return redirect("/")
     except mysql.connector.IntegrityError:
         return "Email already exists", 400
     finally:
         cursor.close()
         db.close()
+    return redirect("/")
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -250,7 +251,6 @@ def download_csv():
     rows = cursor.fetchall()
     cursor.close()
     db.close()
-
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow(["Course", "Name", "Email", "Phone"])
@@ -266,4 +266,4 @@ def download_csv():
 
 # ---------------- RUN ----------------
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(debug=True)
